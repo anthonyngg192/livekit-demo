@@ -1,0 +1,26 @@
+{
+  "name": "livekit-demo",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/livekit-demo/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "livekit-demo:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "livekit-demo:build:development"
+        },
+        "production": {
+          "buildTarget": "livekit-demo:build:production"
+        }
+      }
+    }
+  }
+}
