@@ -1,0 +1,42 @@
+{
+  "editor.detectIndentation": false,
+  "typescript.extension.sortImports.maxNamedImportsInSingleLine": 10,
+  "typescript.extension.sortImports.sortOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.sortJSON": "explicit",
+    "source.removeUnusedImports": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "cSpell.ignoreWords": [
+    "nestjs",
+    "Pagings",
+    "commentable",
+    "pino",
+    "unfollow",
+    "unfollowing",
+    "websockets",
+    "middlewares",
+    "fanout",
+    "upsert"
+  ],
+  "cSpell.ignorePaths": [
+    "**/package-lock.json",
+    "**/node_modules/**",
+    "**/vscode-extension/**",
+    "**/.git/objects/**",
+    ".vscode",
+    ".vscode-insiders",
+    ".env*",
+    "src/i18n/"
+  ],
+  "sortJSON.excludedFiles": ["package.json", "package-lock.json"],
+  "cSpell.words": ["livekit", "nestjs"],
+  "typescript.tsdk": "node_modules/typescript/lib"
+}

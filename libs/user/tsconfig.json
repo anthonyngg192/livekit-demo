@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "strict": true,
+    "composite": true
+  },
+  "extends": "../../tsconfig.base.json",
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ]
+}
