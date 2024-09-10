@@ -37,6 +37,13 @@ export class UserModel extends BaseModel {
   @Prop({ enum: UserStatus, type: String, default: UserStatus })
   status?: UserStatus;
 
+  @Prop({ index: true })
+  code!: string;
+
+  @ApiProperty()
+  @Prop({ type: [String], default: [] })
+  blacklist!: string[];
+
   constructor(dto = null) {
     super();
     assignIn(this, dto);

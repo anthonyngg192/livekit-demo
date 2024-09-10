@@ -34,4 +34,19 @@ export class AppEnvironmentParam {
   @Type(() => String)
   @Expose()
   public JWT_SECRET_KEY!: string;
+
+  @IsString()
+  @Type(() => String)
+  @Expose()
+  public LIVEKIT_API_KEY!: string;
+
+  @IsString()
+  @Type(() => String)
+  @Expose()
+  public LIVEKIT_API_SECRET!: string;
+
+  @IsString()
+  @Type(() => String)
+  @Expose()
+  public LIVEKIT_HOST!: string;
 }

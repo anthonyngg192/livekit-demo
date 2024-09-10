@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt';
+import * as nanoid from 'nanoid';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { omit } from 'lodash';
@@ -28,5 +29,9 @@ export class AuthService {
 
   getProfile(user: UserModel) {
     return omit(user, ['password']);
+  }
+
+  test() {
+    console.log(nanoid.nanoid(20));
   }
 }

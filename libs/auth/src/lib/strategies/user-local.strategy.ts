@@ -13,7 +13,7 @@ export class UserLocalStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(_req, username: string, password: string): Promise<any> {
+  async validate(_req: any, username: string, password: string): Promise<any> {
     return await this.authService.validateUser(username, password);
   }
 }

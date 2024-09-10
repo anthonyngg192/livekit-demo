@@ -14,7 +14,8 @@
       "@livekit-demo/auth": ["libs/auth/src/index.ts"],
       "@livekit-demo/common": ["libs/common/src/index.ts"],
       "@livekit-demo/room": ["libs/room/src/index.ts"],
-      "@livekit-demo/user": ["libs/user/src/index.ts"]
+      "@livekit-demo/user": ["libs/user/src/index.ts"],
+      "@livekit-demo/cache": ["libs/cache/src/index.ts"]
     },
     "rootDir": ".",
     "skipDefaultLibCheck": true,

@@ -1,3 +1,5 @@
+import * as nanoid from 'nanoid';
+import moment from 'moment';
 import { BaseRepository } from '@livekit-demo/common';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -8,5 +10,15 @@ import { RoomDoc, RoomModel } from './models/room.model';
 export class RoomRepository extends BaseRepository<RoomDoc, RoomModel> {
   constructor(@InjectModel(RoomModel.name) public override readonly model: Model<RoomDoc>) {
     super(model);
+  }
+
+  async generateRoomCode(): Promise<string> {
+    const currentDate = moment().format('DDMMYY').toString();
+    const prefixCode = nanoid.random(10);
+
+    const code = `${currentDate}${prefixCode}`;
+    const condition = { code };
+    const instance = await this.find(condition);
+    return instance ? await this.generateRoomCode() : code;
   }
 }

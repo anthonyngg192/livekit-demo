@@ -11,7 +11,9 @@ import { UserDocs } from './docs/user.response';
   path: '/auth',
 })
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {
+    authService.test();
+  }
 
   @ApiExtraModels(SuccessLoginDocs)
   @ApiOkModelResponse({
@@ -19,7 +21,7 @@ export class AuthController {
   })
   @UseGuards(UserLocalAuthGuard)
   @Post('login')
-  async login(@Req() req, @Body() _dto: LoginDTO) {
+  async login(@Req() req: any, @Body() _dto: LoginDTO) {
     return this.authService.successLogin(req.user);
   }
 
@@ -30,7 +32,7 @@ export class AuthController {
   @ApiBearerAuth()
   @UseGuards(UserJWTAuthGuard)
   @Get('profile')
-  getProfile(@Req() req) {
+  getProfile(@Req() req: any) {
     return this.authService.getProfile(req.user);
   }
 }

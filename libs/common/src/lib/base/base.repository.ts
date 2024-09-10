@@ -123,7 +123,7 @@ export abstract class BaseRepository<DocType extends Document, ModelType extends
     const sortType = query.sortType || this.sortType;
 
     if (query.sort) {
-      const sortObject = {};
+      const sortObject = {} as any;
       query.sort.split(',').forEach((field) => {
         sortObject[field.startsWith('-') ? field.slice(1) : field] = field.startsWith('-') ? -1 : 1;
       });
@@ -140,7 +140,7 @@ export abstract class BaseRepository<DocType extends Document, ModelType extends
     };
   }
 
-  async generateCode(preCode: string) {
+  async generateCode(preCode: string): Promise<string> {
     const codeSuffix = this.generateRandomString(5);
     const now = moment();
     const code = `${preCode}${now.format('YYMMDD')}${codeSuffix}`.toUpperCase();
