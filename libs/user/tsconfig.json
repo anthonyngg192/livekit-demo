@@ -1,15 +1,16 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "forceConsistencommonjstCasingInFileNames": true,
     "module": "es2022",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noPropertyAccessFromIndexSignature": true,
     "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "composite": true
   },
-  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
   "references": [
     {
       "path": "./tsconfig.lib.json"

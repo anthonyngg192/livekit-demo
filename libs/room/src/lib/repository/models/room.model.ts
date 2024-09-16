@@ -32,7 +32,7 @@ export class RoomModel extends BaseModel {
   @Prop({ unique: true, index: 'text' })
   code!: string;
 
-  @ApiProperty()
+  @ApiProperty({ enum: RoomType })
   @IsEnum(RoomType)
   @IsOptional()
   @Prop({ type: String, index: 'text' })

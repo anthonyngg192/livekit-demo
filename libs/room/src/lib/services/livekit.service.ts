@@ -1,12 +1,12 @@
-import * as livekit from 'livekit-server-sdk';
+import { AccessToken, RoomServiceClient } from 'livekit-server-sdk';
 import { AppEnvironmentService } from '@livekit-demo/common';
 import { Injectable } from '@nestjs/common';
 @Injectable()
 export class LivekitService {
-  protected roomService: livekit.RoomServiceClient;
+  private roomService: RoomServiceClient;
 
   constructor(protected readonly envService: AppEnvironmentService) {
-    this.roomService = new livekit.RoomServiceClient(
+    this.roomService = new RoomServiceClient(
       this.envService.ENVIRONMENT.LIVEKIT_HOST,
       this.envService.ENVIRONMENT.LIVEKIT_API_KEY,
       this.envService.ENVIRONMENT.LIVEKIT_API_SECRET,
@@ -21,7 +21,7 @@ export class LivekitService {
       maxParticipants: 20,
     };
     await this.roomService.createRoom(opts);
-    const at = new livekit.AccessToken(
+    const at = new AccessToken(
       this.envService.ENVIRONMENT.LIVEKIT_API_KEY,
       this.envService.ENVIRONMENT.LIVEKIT_API_SECRET,
       { identity: userCode },
@@ -41,7 +41,7 @@ export class LivekitService {
   }
 
   async joinRoom(roomCode: string, userCode: string) {
-    const at = new livekit.AccessToken(
+    const at = new AccessToken(
       this.envService.ENVIRONMENT.LIVEKIT_API_KEY,
       this.envService.ENVIRONMENT.LIVEKIT_API_SECRET,
       { identity: userCode },
@@ -53,7 +53,8 @@ export class LivekitService {
       canSubscribe: true,
     });
 
-    const token = await at.toJwt();
+    const token = at.toJwt();
+    console.log(token);
     return { token };
   }
 
@@ -62,7 +63,8 @@ export class LivekitService {
   }
 
   async bannedParticipant(roomCode: string, userCode: string) {
-    await this.roomService.removeParticipant(roomCode, userCode);
+    const res = await this.roomService.removeParticipant(roomCode, userCode);
+    console.log(res);
   }
 
   async participantTrackController(roomCode: string, userCode: string, isMute = true) {

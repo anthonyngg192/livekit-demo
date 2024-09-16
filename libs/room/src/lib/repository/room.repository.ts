@@ -14,8 +14,8 @@ export class RoomRepository extends BaseRepository<RoomDoc, RoomModel> {
 
   async generateRoomCode(): Promise<string> {
     const currentDate = moment().format('DDMMYY').toString();
-    const prefixCode = nanoid.random(10);
-
+    const preGenerate = nanoid.customAlphabet('1234567890qwertyuioplkjhgfdsazxcvbnm', 10);
+    const prefixCode = preGenerate();
     const code = `${currentDate}${prefixCode}`;
     const condition = { code };
     const instance = await this.find(condition);

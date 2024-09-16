@@ -3,6 +3,7 @@ import { ApiOkModelResponse, UserJWTAuthGuard, UserLocalAuthGuard } from '@livek
 import { AuthService } from './auth.service';
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { LoginDTO } from './dto/login.dto';
+import { SignUpDto } from './dto/sign-up.dto';
 import { SuccessLoginDocs } from './docs/success-login.docs';
 import { UserDocs } from './docs/user.response';
 
@@ -11,9 +12,7 @@ import { UserDocs } from './docs/user.response';
   path: '/auth',
 })
 export class AuthController {
-  constructor(private readonly authService: AuthService) {
-    authService.test();
-  }
+  constructor(private readonly authService: AuthService) {}
 
   @ApiExtraModels(SuccessLoginDocs)
   @ApiOkModelResponse({
@@ -34,5 +33,14 @@ export class AuthController {
   @Get('profile')
   getProfile(@Req() req: any) {
     return this.authService.getProfile(req.user);
+  }
+
+  @ApiExtraModels(SuccessLoginDocs)
+  @ApiOkModelResponse({
+    type: SuccessLoginDocs,
+  })
+  @Post('sign-up')
+  async signUp(@Body() dto: SignUpDto) {
+    return this.authService.register(dto);
   }
 }

@@ -37,7 +37,6 @@ export class RoomService {
   async joinRoom(roomCode: string, user: UserModel) {
     const room = await this.roomRepo.find({ code: roomCode });
     if (!room) throw new BadRequestException(ApiError.RoomNotFound);
-
     if (room.blacklist.some((x) => x === user.code)) throw new BadRequestException(ApiError.YouCanNotAccessToThisRoom);
 
     if (room.type === RoomType.Private && !room.participants.some((x) => x.code === user.code))
@@ -45,7 +44,10 @@ export class RoomService {
 
     const result = await this.livekitService.joinRoom(roomCode, user.code);
     if (!result.token) throw new InternalServerErrorException(ApiError.SomethingWentWrong);
-    await this.roomRepo.updateOne({ code: room.code }, { $addToSet: { participants: user.code } });
+    await this.roomRepo.updateOne(
+      { code: room.code },
+      { $addToSet: { participants: { code: user.code, isMute: false } } },
+    );
     return { token: result.token };
   }
 
@@ -55,7 +57,12 @@ export class RoomService {
     if (room.blacklist.some((x) => x === user.code)) throw new BadRequestException(ApiError.YouCanNotAccessToThisRoom);
     if (room.participants.some((x) => x.code === user.code)) throw new BadRequestException(ApiError.YouAreNotInRoom);
     await this.livekitService.leftRoom(roomCode, user.code);
-    this.roomRepo.updateOne({ code: room.code }, { $pull: { participants: user.code } });
+    this.roomRepo.updateOne(
+      {
+        code: room.code,
+      },
+      { $pull: { participants: { code: user.code } } },
+    );
     return true;
   }
 
@@ -65,7 +72,8 @@ export class RoomService {
     if (room.ownerCode !== user.code) throw new BadRequestException(ApiError.RoomPermission);
     if (room.blacklist.some((x) => x === dto.userCode))
       throw new BadRequestException(ApiError.UserAlreadyBannedFromThisRoom);
-    if (room.ownerCode === user.code) throw new BadRequestException(ApiError.YouCanNotBanYourSelf);
+    if (room.ownerCode === dto.userCode) throw new BadRequestException(ApiError.YouCanNotBanYourSelf);
+    console.log(1);
     await Promise.all([
       this.roomRepo.updateOne({ code: room.code }, { $addToSet: { blacklist: dto.userCode } }),
       this.livekitService.bannedParticipant(roomCode, dto.userCode),

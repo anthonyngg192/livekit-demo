@@ -3,6 +3,7 @@ import * as nanoid from 'nanoid';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { omit } from 'lodash';
+import { SignUpDto } from './dto/sign-up.dto';
 import { UserModel, UserRepository, UserStatus } from '@livekit-demo/user';
 
 @Injectable()
@@ -33,5 +34,24 @@ export class AuthService {
 
   test() {
     console.log(nanoid.nanoid(20));
+  }
+
+  async register(dto: SignUpDto) {
+    const rePassword = await bcrypt.hashSync(dto.password, 10);
+    const code = await this.userRepo.generateUserCode();
+    const newUser = await this.userRepo.insert({
+      email: dto.email,
+      password: rePassword,
+      passwordUpdatedAt: Date.now(),
+      status: UserStatus.Active,
+      name: dto.name,
+      code,
+      blacklist: [],
+    });
+    if (!newUser) throw new BadRequestException();
+    return {
+      accessToken: this.jwtService.sign(omit(newUser, ['password'])),
+      profile: omit(newUser, ['password']),
+    };
   }
 }
