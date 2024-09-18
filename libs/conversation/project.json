@@ -1,0 +1,9 @@
+{
+  "name": "conversation",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/conversation/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project conversation --web",
+  "targets": {}
+}

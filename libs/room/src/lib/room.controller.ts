@@ -1,10 +1,10 @@
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { BannedParticipantDTO } from './dto/banned-user.dto';
-import { Body, Controller, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { CreateRoomDTO } from './dto/create-room.dto';
 import { GetRoomDTO } from './dto/get-room.dto';
+import { PagingDTO, UserJWTAuthGuard } from '@livekit-demo/common';
 import { RoomService } from './services/room.service';
-import { UserJWTAuthGuard } from '@livekit-demo/common';
 import { UserTrackDTO } from './dto/user-track.dto';
 
 @ApiBearerAuth()
@@ -36,8 +36,13 @@ export class RoomController {
     return this.roomService.banUser(param.code, req.user, dto);
   }
 
-  @Put('code/user-track')
+  @Put(':code/user-track')
   async userTrack(@Req() req: any, @Param() param: GetRoomDTO, @Body() dto: UserTrackDTO) {
     return this.roomService.roomUseTrack(param.code, req.user, dto);
+  }
+
+  @Get()
+  async paginate(@Req() req: any, @Query() query: PagingDTO) {
+    return this.roomService.paginate(query, req.user);
   }
 }

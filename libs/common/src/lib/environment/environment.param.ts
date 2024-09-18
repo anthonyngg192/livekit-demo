@@ -49,4 +49,9 @@ export class AppEnvironmentParam {
   @Type(() => String)
   @Expose()
   public LIVEKIT_HOST!: string;
+
+  @IsString()
+  @Type(() => String)
+  @Expose()
+  public REDIS_URL!: string;
 }

@@ -54,6 +54,10 @@ export class RoomModel extends BaseModel {
   @Prop({ type: String })
   status!: RoomStatus;
 
+  @ApiResponseProperty()
+  @Prop({ type: Number, default: 205 })
+  limit?: number;
+
   constructor(dto = null) {
     super();
     assignIn(this, dto);

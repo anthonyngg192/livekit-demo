@@ -1,4 +1,4 @@
-import { ApiError } from '@livekit-demo/common';
+import { ApiError, PagingDTO } from '@livekit-demo/common';
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { BannedParticipantDTO } from '../dto/banned-user.dto';
 import { CreateRoomDTO } from '../dto/create-room.dto';
@@ -111,5 +111,30 @@ export class RoomService {
       ),
     ]);
     return true;
+  }
+
+  async paginate(query: PagingDTO, user: UserModel) {
+    const remakeQuery = {
+      ...query,
+      blacklist: { $ne: user.code },
+    };
+
+    return this.roomRepo.paginateAggregate(remakeQuery, [
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'participants',
+          foreignField: 'code',
+          as: 'participantsDetail',
+          pipeline: [
+            {
+              $project: {
+                name: 1,
+              },
+            },
+          ],
+        },
+      },
+    ]);
   }
 }
