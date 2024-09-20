@@ -1,0 +1,15 @@
+port: 7880
+
+rtc:
+  port_range_start: 50000
+  port_range_end: 60000
+  tcp_port: 7881
+  use_external_ip: true
+keys:
+  key1: devkeydevkeydevkeydevkeydevkeydevkeydevkeydevkeydevkey
+  key2: afewojfaowiejfoawjefoaeiwjf39102391029381093812093
+
+webhook:
+  api_key: 'api-key-to-sign-with'
+  urls:
+    - http://127.0.0.1:300

@@ -1,4 +1,4 @@
-import { AccessToken, RoomServiceClient } from 'livekit-server-sdk';
+import { AccessToken, RoomServiceClient, WebhookReceiver } from 'livekit-server-sdk';
 import { AppEnvironmentService } from '@livekit-demo/common';
 import { Injectable } from '@nestjs/common';
 @Injectable()
@@ -69,5 +69,16 @@ export class LivekitService {
 
   async participantTrackController(roomCode: string, userCode: string, isMute = true) {
     await this.roomService.mutePublishedTrack(roomCode, userCode, 'track_sid', isMute);
+  }
+
+  async testing(dto: any) {
+    const receiver = new WebhookReceiver(
+      this.envService.ENVIRONMENT.LIVEKIT_API_KEY,
+      this.envService.ENVIRONMENT.LIVEKIT_API_SECRET,
+    );
+
+    const event = receiver.receive(dto, 'thisisapikeytestingforanthony');
+
+    console.log(event);
   }
 }
