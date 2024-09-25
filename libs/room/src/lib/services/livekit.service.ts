@@ -76,8 +76,7 @@ export class LivekitService {
       this.envService.ENVIRONMENT.LIVEKIT_API_KEY,
       this.envService.ENVIRONMENT.LIVEKIT_API_SECRET,
     );
-
-    const event = receiver.receive(dto, jwt);
+    const event = receiver.receive(dto.toString(), jwt);
 
     console.log(event);
     return true;
