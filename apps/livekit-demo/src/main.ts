@@ -1,5 +1,5 @@
 import { AppModule } from './app/app.module';
-import { BadRequestException, Logger, ValidationPipe } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { NestFactory } from '@nestjs/core';
 import { SanitizePayloadPipe } from '@livekit-demo/common';
@@ -10,15 +10,15 @@ async function bootstrap() {
   app.enableCors({ origin: true, methods: ['GET', 'POST', 'DELETE', 'PUT'] });
   app.useGlobalPipes(
     new SanitizePayloadPipe(),
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      exceptionFactory: (error) => {
-        console.log(error);
-        return new BadRequestException(error);
-      },
-    }),
+    // new ValidationPipe({
+    //   transform: true,
+    //   whitelist: true,
+    //   forbidNonWhitelisted: true,
+    //   exceptionFactory: (error) => {
+    //     console.log(error);
+    //     return new BadRequestException(error);
+    //   },
+    // }),
   );
 
   const globalPrefix = 'api';
