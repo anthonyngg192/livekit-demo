@@ -80,5 +80,6 @@ export class LivekitService {
     const event = receiver.receive(dto, jwt);
 
     console.log(event);
+    return true;
   }
 }
