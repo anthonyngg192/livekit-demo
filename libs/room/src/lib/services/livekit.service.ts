@@ -72,7 +72,6 @@ export class LivekitService {
   }
 
   async testing(dto: any, jwt: string) {
-    console.log(dto);
     const receiver = new WebhookReceiver(
       this.envService.ENVIRONMENT.LIVEKIT_API_KEY,
       this.envService.ENVIRONMENT.LIVEKIT_API_SECRET,
