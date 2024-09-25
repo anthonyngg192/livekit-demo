@@ -2,7 +2,9 @@
   "name": "@livekit-demo/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "dev": "nx serve livekit-demo --watch"
+  },
   "private": true,
   "dependencies": {
     "@nestjs/bull": "^10.2.1",

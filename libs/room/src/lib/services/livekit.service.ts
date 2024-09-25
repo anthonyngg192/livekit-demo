@@ -77,7 +77,10 @@ export class LivekitService {
       this.envService.ENVIRONMENT.LIVEKIT_API_SECRET,
     );
 
-    const event = receiver.receive(dto, 'thisisapikeytestingforanthony');
+    const event = receiver.receive(
+      dto,
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6IjI1MDkyNGt5bzlhMXJrdGsiLCJjYW5QdWJsaXNoIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWV9LCJpYXQiOjE3MjcyNjA5NjYsIm5iZiI6MTcyNzI2MDk2NiwiZXhwIjoxNzI3MjgyNTY2LCJpc3MiOiJBUElHUEgzdWs3NkZueFIiLCJzdWIiOiIxNjA5MjRlMWhmbXpucWM3IiwianRpIjoiMTYwOTI0ZTFoZm16bnFjNyJ9.c3n0kJYFrV0SZyWjb8WyFzVRgylgPQFvPWw1IdYgdr4',
+    );
 
     console.log(event);
   }
