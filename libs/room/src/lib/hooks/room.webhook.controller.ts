@@ -9,7 +9,7 @@ export class RoomWebhookController {
 
   @Post()
   async test(@Req() req: any, @Body() dto: any) {
-    const jwt = req.headers['Authorization'];
+    const jwt = req.headers['authorization'];
     return this.livekitService.testing(dto, jwt);
   }
 }
