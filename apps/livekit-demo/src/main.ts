@@ -1,3 +1,4 @@
+import * as bodyParser from 'body-parser';
 import { AppModule } from './app/app.module';
 import { Logger } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -23,6 +24,16 @@ async function bootstrap() {
     //     return new BadRequestException(error);
     //   },
     // }),
+  );
+
+  app.use(
+    bodyParser.json({
+      verify: (req: any, _res, buf, encoding) => {
+        if (buf && buf.length) {
+          req.rawBody = buf.toString(encoding || 'utf8');
+        }
+      },
+    }),
   );
 
   const globalPrefix = 'api';
