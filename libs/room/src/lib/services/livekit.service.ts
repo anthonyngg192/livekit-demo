@@ -71,15 +71,14 @@ export class LivekitService {
     await this.roomService.mutePublishedTrack(roomCode, userCode, 'track_sid', isMute);
   }
 
-  async testing(dto: any, jwt: string) {
+  async testing(_dto: any, _jwt: string) {
     const receiver = new WebhookReceiver(
       this.envService.ENVIRONMENT.LIVEKIT_API_KEY,
       this.envService.ENVIRONMENT.LIVEKIT_API_SECRET,
     );
-    const jsonString = JSON.stringify(dto);
-    const event = receiver.receive(jsonString, jwt);
 
-    console.log(event);
+    console.log(receiver);
+    console.log(_dto);
     return true;
   }
 }

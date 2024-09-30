@@ -7,7 +7,11 @@ import { setupSwaggerUI } from './app/swagger/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.enableCors({ origin: true, methods: ['GET', 'POST', 'DELETE', 'PUT'] });
+  app.enableCors({
+    origin: true,
+    methods: ['GET', 'POST', 'DELETE', 'PUT'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'livekit-signature'],
+  });
   app.useGlobalPipes(
     new SanitizePayloadPipe(),
     // new ValidationPipe({
