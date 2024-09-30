@@ -8,16 +8,18 @@ export class RoomWebhookController {
   constructor(private readonly livekitService: LivekitService) {}
 
   @Post()
-  async test(@Req() req: any, @Body() dto: any) {
+  async test(@Req() req: any, @Body() _dto: any) {
     const jwt = req.headers['authorization'];
 
     let data = '';
     req.on('data', (chunk) => {
-      console.log(chunk);
       data += chunk;
     });
-    console.log(data);
 
-    return this.livekitService.testing(dto, jwt);
+    req.on('end', () => {
+      this.livekitService.testing(data, jwt);
+    });
+
+    return true;
   }
 }
