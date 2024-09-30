@@ -10,7 +10,7 @@ export class RoomWebhookController {
   @Post()
   async test(@Req() req: any, @Body() _dto: any) {
     const jwt = req.headers['authorization'];
-
+    req.setEncoding('utf8');
     let data = '';
     req.on('data', (chunk) => {
       data += chunk;
