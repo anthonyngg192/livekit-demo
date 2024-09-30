@@ -16,6 +16,7 @@ export class RoomWebhookController {
       data += chunk;
     });
 
+    console.log(data);
     req.on('end', () => {
       this.livekitService.testing(data, jwt);
     });
