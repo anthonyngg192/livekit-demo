@@ -13,6 +13,7 @@ export class RoomWebhookController {
 
     let data = '';
     req.on('data', (chunk) => {
+      console.log(chunk);
       data += chunk;
     });
     console.log(data);
