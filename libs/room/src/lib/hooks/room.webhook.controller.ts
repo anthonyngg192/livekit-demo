@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Controller, Post, Req } from '@nestjs/common';
 import { LivekitService } from '../services/livekit.service';
 
 @Controller({
@@ -8,7 +8,7 @@ export class RoomWebhookController {
   constructor(private readonly livekitService: LivekitService) {}
 
   @Post()
-  async test(@Req() req: any, @Body() _dto: any) {
+  async receive(@Req() req: any) {
     const jwt = req.headers['authorization'];
     req.setEncoding('utf8');
     let data = '';
@@ -16,9 +16,8 @@ export class RoomWebhookController {
       data += chunk;
     });
 
-    console.log(data);
     req.on('end', () => {
-      this.livekitService.testing(data, jwt);
+      this.livekitService.webhookReceive(data, jwt);
     });
 
     return true;

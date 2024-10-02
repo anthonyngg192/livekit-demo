@@ -1,3 +1,4 @@
+import { BullModule } from '@nestjs/bullmq';
 import { LivekitService } from './services/livekit.service';
 import { Module } from '@nestjs/common';
 import { RoomController } from './room.controller';
@@ -6,7 +7,12 @@ import { RoomService } from './services/room.service';
 import { RoomWebhookController } from './hooks/room.webhook.controller';
 
 @Module({
-  imports: [RoomModelModule],
+  imports: [
+    RoomModelModule,
+    BullModule.registerQueue({
+      name: 'room',
+    }),
+  ],
   controllers: [RoomController, RoomWebhookController],
   providers: [RoomService, LivekitService],
   exports: [RoomService, LivekitService],

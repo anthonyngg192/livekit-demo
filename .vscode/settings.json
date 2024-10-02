@@ -38,6 +38,6 @@
     "src/i18n/"
   ],
   "sortJSON.excludedFiles": ["package.json", "package-lock.json"],
-  "cSpell.words": ["livekit", "nestjs", "qwertyuioplkjhgfdsazxcvbnm"],
+  "cSpell.words": ["bullmq", "livekit", "nestjs", "qwertyuioplkjhgfdsazxcvbnm"],
   "typescript.tsdk": "node_modules/typescript/lib"
 }
