@@ -1,17 +1,11 @@
 import { ApiBearerAuth, ApiExtraModels, ApiTags } from '@nestjs/swagger';
+import { ApiOkModelResponse, IsPublic, UserJWTAuthGuard, UserLocalAuthGuard } from '@livekit-demo/common';
 import { AuthService } from './auth.service';
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { LoginDTO } from './dto/login.dto';
 import { SignUpDto } from './dto/sign-up.dto';
 import { SuccessLoginDocs } from './docs/success-login.docs';
 import { UserDocs } from './docs/user.response';
-import {
-  AnonymousGuard,
-  ApiOkModelResponse,
-  IsPublic,
-  UserJWTAuthGuard,
-  UserLocalAuthGuard,
-} from '@livekit-demo/common';
 
 @ApiTags('Auth')
 @Controller({
@@ -51,7 +45,7 @@ export class AuthController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(AnonymousGuard)
+  @UseGuards(UserJWTAuthGuard)
   @IsPublic()
   @Post('test')
   async test(@Req() req: any) {
