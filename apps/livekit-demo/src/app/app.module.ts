@@ -1,6 +1,5 @@
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthModule } from '@livekit-demo/auth';
-import { BullModule } from '@nestjs/bull';
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RoomModule } from '@livekit-demo/room';
@@ -21,12 +20,6 @@ import {
       inject: [AppEnvironmentService],
     }),
     CommonModule.foRoot(),
-    BullModule.forRoot({
-      redis: {
-        host: '103.150.125.60',
-        port: 6378,
-      },
-    }),
     AuthModule,
     UserModule,
     RoomModule,

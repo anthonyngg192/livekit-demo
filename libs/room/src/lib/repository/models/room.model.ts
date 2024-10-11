@@ -58,6 +58,14 @@ export class RoomModel extends BaseModel {
   @Prop({ type: Number, default: 205 })
   limit?: number;
 
+  @ApiResponseProperty()
+  @Prop({ type: Number })
+  roomStart?: number;
+
+  @ApiResponseProperty()
+  @Prop({ type: Number })
+  roomEnd?: number;
+
   constructor(dto = null) {
     super();
     assignIn(this, dto);

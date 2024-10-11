@@ -1,11 +1,12 @@
 import { AccessToken, RoomServiceClient, WebhookReceiver } from 'livekit-server-sdk';
 import { AppEnvironmentService } from '@livekit-demo/common';
 import { Injectable } from '@nestjs/common';
+import { RoomRepository } from '../repository';
 @Injectable()
 export class LivekitService {
   private roomService: RoomServiceClient;
 
-  constructor(protected readonly envService: AppEnvironmentService) {
+  constructor(protected readonly envService: AppEnvironmentService, private readonly roomRepo: RoomRepository) {
     this.roomService = new RoomServiceClient(
       this.envService.ENVIRONMENT.LIVEKIT_HOST,
       this.envService.ENVIRONMENT.LIVEKIT_API_KEY,
@@ -78,7 +79,66 @@ export class LivekitService {
     );
 
     const event = receiver.receive(_dto, _jwt);
-    console.log(event);
+
+    const roomInfo = event.room;
+    const participantInfo = event.participant;
+    switch (event.event) {
+      case 'room_started':
+        await this.roomRepo.updateOne(
+          {
+            code: roomInfo?.name,
+          },
+          {
+            roomStart: Date.now(),
+          },
+        );
+        break;
+
+      case 'participant_joined':
+        await this.roomRepo.updateOne(
+          { code: roomInfo?.name },
+          { $addToSet: { participants: { code: participantInfo?.name, isMute: false } } },
+        );
+        break;
+
+      case 'participant_left':
+        this.roomRepo.updateOne(
+          {
+            code: roomInfo?.name,
+          },
+          { $pull: { participants: { code: participantInfo?.name } } },
+        );
+        break;
+
+      case 'track_published':
+        this.roomRepo.updateOne(
+          { code: roomInfo?.name, 'participants.code': participantInfo?.name },
+          { $set: { 'participants.$.isMute': true } },
+        );
+        break;
+
+      case 'track_unpublished':
+        this.roomRepo.updateOne(
+          { code: roomInfo?.name, 'participants.code': participantInfo?.name },
+          { $set: { 'participants.$.isMute': false } },
+        );
+        break;
+
+      case 'room_finished':
+        await this.roomRepo.updateOne(
+          {
+            code: roomInfo?.name,
+          },
+          {
+            roomEnd: Date.now(),
+          },
+        );
+        break;
+
+      default:
+        return;
+    }
+
     return true;
   }
 }

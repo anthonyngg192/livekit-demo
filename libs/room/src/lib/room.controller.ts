@@ -23,7 +23,7 @@ export class RoomController {
 
   @Post(':code/join')
   async joinRoom(@Req() req: any, @Param() param: GetRoomDTO) {
-    return this.roomService.joinRoom(param.code, req.user);
+    return this.roomService.generateTokenJoinRoom(param.code, req.user);
   }
 
   @Post(':code/left')

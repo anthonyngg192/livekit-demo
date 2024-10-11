@@ -34,7 +34,7 @@ export class RoomService {
     return { token: result.token };
   }
 
-  async joinRoom(roomCode: string, user: UserModel) {
+  async generateTokenJoinRoom(roomCode: string, user: UserModel) {
     const room = await this.roomRepo.find({ code: roomCode });
     if (!room) throw new BadRequestException(ApiError.RoomNotFound);
     if (room.blacklist.some((x) => x === user.code)) throw new BadRequestException(ApiError.YouCanNotAccessToThisRoom);
@@ -44,10 +44,6 @@ export class RoomService {
 
     const result = await this.livekitService.joinRoom(roomCode, user.code);
     if (!result.token) throw new InternalServerErrorException(ApiError.SomethingWentWrong);
-    await this.roomRepo.updateOne(
-      { code: room.code },
-      { $addToSet: { participants: { code: user.code, isMute: false } } },
-    );
     return { token: result.token };
   }
 
@@ -57,12 +53,6 @@ export class RoomService {
     if (room.blacklist.some((x) => x === user.code)) throw new BadRequestException(ApiError.YouCanNotAccessToThisRoom);
     if (room.participants.some((x) => x.code === user.code)) throw new BadRequestException(ApiError.YouAreNotInRoom);
     await this.livekitService.leftRoom(roomCode, user.code);
-    this.roomRepo.updateOne(
-      {
-        code: room.code,
-      },
-      { $pull: { participants: { code: user.code } } },
-    );
     return true;
   }
 
@@ -73,11 +63,7 @@ export class RoomService {
     if (room.blacklist.some((x) => x === dto.userCode))
       throw new BadRequestException(ApiError.UserAlreadyBannedFromThisRoom);
     if (room.ownerCode === dto.userCode) throw new BadRequestException(ApiError.YouCanNotBanYourSelf);
-    console.log(1);
-    await Promise.all([
-      this.roomRepo.updateOne({ code: room.code }, { $addToSet: { blacklist: dto.userCode } }),
-      this.livekitService.bannedParticipant(roomCode, dto.userCode),
-    ]);
+    await Promise.all([this.roomRepo.updateOne({ code: room.code }, { $addToSet: { blacklist: dto.userCode } })]);
     return true;
   }
 
@@ -103,13 +89,7 @@ export class RoomService {
       throw new BadRequestException(ApiError.UserAlreadyBannedFromThisRoom);
     if (room.participants.some((x) => x.code === user.code)) throw new BadRequestException(ApiError.YouAreNotInRoom);
 
-    await Promise.all([
-      this.livekitService.participantTrackController(room.code, dto.userCode, dto.isMute),
-      this.roomRepo.updateOne(
-        { code: room.code, 'participants.code': dto.userCode },
-        { $set: { 'participants.$.isMute': dto.isMute } },
-      ),
-    ]);
+    await Promise.all([this.livekitService.participantTrackController(room.code, dto.userCode, dto.isMute)]);
     return true;
   }
 
